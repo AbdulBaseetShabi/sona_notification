@@ -89,5 +89,5 @@ def runThread():
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
-  scheduler.add_job(runThread, "interval", seconds=30)
+  scheduler.add_job(runThread, "interval", minutes=2)
   scheduler.start()
