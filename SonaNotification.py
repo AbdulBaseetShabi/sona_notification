@@ -36,9 +36,16 @@ class SonaNotification:
         for child in td.findAll('a', attrs={'class': False}):
           current_studies.append(child.string.lower().strip())
 
-      differences = self.compareList(current_studies, self.readFile("old_studies.txt"))
+      old_studies = self.readFile("old_studies.txt")
+      differences = self.compareList(current_studies, old_studies)
 
       if len(differences) != 0:
+        print("Old Studies")
+        print(old_studies)
+        print("Current Studies")
+        print(current_studies)
+        print("Differences")
+        print(differences)
         for new_study in differences:
           self.sendEmail(new_study)
           self.updateFile(new_study)
@@ -68,7 +75,11 @@ class SonaNotification:
       return
 
     def compareList(self, newlist, oldlist):
-      return [x for x in newlist if x not in oldlist]
+      response = []
+      for study in newlist:
+        if study not in oldlist:
+          response.append(study)
+      return response
 
     def readFile(self, file_name):
       response = []
@@ -89,5 +100,5 @@ def runThread():
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
-  scheduler.add_job(runThread, "interval", minutes=2)
+  scheduler.add_job(runThread, "interval", minutes=3)
   scheduler.start()
