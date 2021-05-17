@@ -54,14 +54,15 @@ class SonaNotification:
     def sendEmail(self, name_of_study):
       try:
         msg = EmailMessage()
+        mailinglist = self.readFile("mailinglist.txt")
         msg.set_content(f"There is a new study called {name_of_study}. If you have already done it in the past please ignore this email.")
         msg['Subject'] = "New Sona Study Notification"
         msg['From'] = "donotreply@gmail.com"
-        msg['To'] = self.readFile("mailinglist.txt")
+        msg['To'] = ', '.join(mailinglist)
         print("Sending Email...............")
         s = smtplib.SMTP_SSL('smtp.gmail.com')
         s.login(self._email_username, self._email_password)
-        s.sendmail(msg['From'], msg['To'], msg.as_string())
+        s.sendmail("donotreply@gmail.com", mailinglist, msg.as_string())
         s.quit()
       except Exception as a:
         print(a)
@@ -100,5 +101,5 @@ def runThread():
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
-  scheduler.add_job(runThread, "interval", minutes=3)
+  scheduler.add_job(runThread, "interval", minutes=2)
   scheduler.start()
