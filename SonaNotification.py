@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from twill.commands import fv, submit, go, browser
 import re
+import logging
 import smtplib
 from time import time, sleep
 from email.message import EmailMessage
@@ -40,15 +41,10 @@ class SonaNotification:
       differences = self.compareList(current_studies, old_studies)
 
       if len(differences) != 0:
-        print("Old Studies")
-        print(old_studies)
-        print("Current Studies")
-        print(current_studies)
-        print("Differences")
-        print(differences)
         for new_study in differences:
           self.sendEmail(new_study)
           self.updateFile(new_study)
+          self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences))
       return
 
     def sendEmail(self, name_of_study):
@@ -59,7 +55,7 @@ class SonaNotification:
         msg['Subject'] = "New Sona Study Notification"
         msg['From'] = "donotreply@gmail.com"
         msg['To'] = ', '.join(mailinglist)
-        print("Sending Email...............")
+        self.log('Sending', "Sending Email...............")
         s = smtplib.SMTP_SSL('smtp.gmail.com')
         s.login(self._email_username, self._email_password)
         s.sendmail("donotreply@gmail.com", mailinglist, msg.as_string())
@@ -92,12 +88,17 @@ class SonaNotification:
 
     def GetCredentials(self):
       return self.readFile("credentials.txt")
+    
+    def log(self, type, message):
+      logging.basicConfig(handlers=[logging.StreamHandler()])
+      log = logging.getLogger(type)
+      log.info(message)
+      return
       
 def runThread():
   newInstance = SonaNotification()
   newInstance.checkNewSonaStudy()
-  print("Cron job is running")
-  print("Tick! The time is: %s" % datetime.now())
+  newInstance.log('Running', "Tick! The time is: %s" % datetime.now())
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
