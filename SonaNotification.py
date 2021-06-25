@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from twill.commands import fv, submit, go, browser
 import re
 import logging
+from pytz import timezone
 import smtplib
 from time import time, sleep
 from email.message import EmailMessage
@@ -94,11 +95,11 @@ class SonaNotification:
       log = logging.getLogger(type)
       log.info(message)
       return
-      
+
 def runThread():
   newInstance = SonaNotification()
   newInstance.checkNewSonaStudy()
-  newInstance.log('Running', "Tick! The time is: %s" % datetime.now())
+  newInstance.log('Running', "Tick! The time is: %s" % datetime.now(timezone('US/Eastern')))
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
