@@ -40,12 +40,12 @@ class SonaNotification:
 
       old_studies = self.readFile("old_studies.txt")
       differences = self.compareList(current_studies, old_studies)
-
+      
       if len(differences) != 0:
         for new_study in differences:
           self.sendEmail(new_study)
           self.updateFile(new_study)
-          self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences))
+          self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences))    
       return
 
     def sendEmail(self, name_of_study):
@@ -103,5 +103,5 @@ def runThread():
 
 if __name__ == "__main__":  
   scheduler = BlockingScheduler()
-  scheduler.add_job(runThread, "interval", minutes=2)
+  scheduler.add_job(runThread, "interval", minutes=3)
   scheduler.start()
