@@ -133,5 +133,5 @@ def runThread():
 
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
-    scheduler.add_job(runThread, "interval", minutes=1)
+    scheduler.add_job(runThread, "interval", minutes=5)
     scheduler.start()
