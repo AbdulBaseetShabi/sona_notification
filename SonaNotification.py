@@ -45,13 +45,19 @@ class SonaNotification:
             current_studies.append(child.string.lower().strip())
 
         old_studies = self.getOldStudies()
-        differences = self.compareList(current_studies, old_studies)
+        differences, studies_not_displayed_anymore = self.compareList(current_studies, old_studies)
+
+        # print("Old Studies: ", old_studies)
+        # print("Current Studies on Sona: ", current_studies)
+        # print("New Studies not done: ", differences)
+        # print("Studies to delete: ", studies_not_displayed_anymore)
 
         if len(differences) != 0:
           for new_study in differences:
             self.sendEmail(new_study)
             self.updateDB(new_study)
             self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences))
+        self.deleteInDB(studies_not_displayed_anymore)
         return
 
     def getOldStudies(self):
@@ -83,12 +89,25 @@ class SonaNotification:
         self._collection.insert_one({'name': study})
         return
 
+    def deleteInDB(self, studies):
+        for study in studies:
+            self._collection.delete_one({'name': study})
+        return 
+
     def compareList(self, newlist, oldlist):
-        response = []
+        new_studies = []
+        possibly_reopened_lateron = []
+
+        #Sona Studies being displayed but not in DB
         for study in newlist:
             if study not in oldlist:
-                response.append(study)
-        return response
+                new_studies.append(study)
+
+        #Old studies that are not being displayed but can open later on
+        for study_2 in oldlist:
+            if study_2 not in newlist:
+                possibly_reopened_lateron.append(study_2)
+        return new_studies, possibly_reopened_lateron
 
     def readFile(self, file_name):
         response = []
@@ -114,5 +133,5 @@ def runThread():
 
 if __name__ == "__main__":
     scheduler = BlockingScheduler()
-    scheduler.add_job(runThread, "interval", minutes=3)
+    scheduler.add_job(runThread, "interval", minutes=1)
     scheduler.start()
