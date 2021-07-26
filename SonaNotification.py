@@ -63,7 +63,7 @@ class SonaNotification:
             if not reopened_study:
                 self.updateDB(new_study, True)
             self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences) + "; Master List: " + ", ".join(master_list_studies))
-        self.deleteInDB(studies_not_displayed_anymore)
+        # self.deleteInDB(studies_not_displayed_anymore)
         return
 
     def getOldStudies(self, is_master_list):
