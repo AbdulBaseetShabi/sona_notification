@@ -57,10 +57,10 @@ class SonaNotification:
 
         if len(differences) != 0:
           for new_study in differences:
-            reopened_study = new_study in master_list_studies
+            reopened_study = new_study not in master_list_studies
             self.sendEmail(new_study, reopened_study)
             self.updateDB(new_study, False)
-            if not reopened_study:
+            if reopened_study:
                 self.updateDB(new_study, True)
             self.log("Email", "Old Studies: " + ", ".join(old_studies) + "; Current Studies: " + ", ".join(current_studies) + "; Differences: " + ", ".join(differences) + "; Master List: " + ", ".join(master_list_studies))
         # self.deleteInDB(studies_not_displayed_anymore)
