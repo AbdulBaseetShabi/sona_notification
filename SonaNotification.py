@@ -77,7 +77,7 @@ class SonaNotification:
     def sendEmail(self, name_of_study, is_new_study):
         try:
             msg = EmailMessage()
-            mailinglist = self.readFile("mailinglist.txt")
+            mailinglist = self.readFile("secrets/mailinglist.txt")
             email = f"There is a new study called {name_of_study}. If you have already done it in the past please ignore this email."
             if not is_new_study:
                 email = f"An old study called {name_of_study} has been reopened. If you have already done it in the past please ignore this email."
@@ -129,7 +129,7 @@ class SonaNotification:
         return response
 
     def GetCredentials(self):
-        return self.readFile("credentials.txt")
+        return self.readFile("secrets/credentials.txt")
 
     def log(self, type, message):
         logging.basicConfig(handlers=[logging.StreamHandler()])
