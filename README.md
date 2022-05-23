@@ -24,7 +24,7 @@ The script was written in ***Python***, uses ***MongoDB*** to store its data and
   git clone https://github.com/AbdulBaseetShabi/sona_notification
   ```
 - ### Steps 
-  - Please be advised to use a private repository 
+  - Please be advised to use a ***private repository***
   - Create a folder called ***secrets***
   - Under ***secrets*** 
     - Create a file called ***credentials.txt*** 
@@ -44,7 +44,7 @@ The script was written in ***Python***, uses ***MongoDB*** to store its data and
     - line 7 is the name of the database
     - line 8 is the name of the first collection 
     - line 9 is the name of the second collection
-  - ***mailinglist.txt**
+  - ***mailinglist.txt***
     - put the email to send the notifications to 
     - if there are multiple put each email on a new line
   - Create a Heroku account and deploy code there as a cron job
