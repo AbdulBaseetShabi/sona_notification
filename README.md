@@ -19,11 +19,11 @@ The script was written in ***Python***, uses ***MongoDB*** to store its data and
 
 ### Usage
 ---
-- General 
+- ### General 
   ```sh
   git clone https://github.com/AbdulBaseetShabi/sona_notification
   ```
-- Steps 
+- ### Steps 
   - Please be advised to use a private repository 
   - Create a folder called ***secrets***
   - Under ***secrets*** 
